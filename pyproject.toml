@@ -6,9 +6,10 @@ authors     = []
 readme      = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python    = "^3.11"
 gymnasium = "^0.28.1"
-pygame = "^2.3.0"
+pygame    = "^2.3.0"
+pymunk    = "^6.4.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
@@ -65,10 +66,12 @@ select = [
 ]
 # to add:
 line-length    = 120
-target-version = "py38"
+target-version = "py311"
+ignore         = ["ANN101"]
 
 [tool.black]
 line-length = 120
+preview     = true
 
 [tool.mypy]
 strict = true
