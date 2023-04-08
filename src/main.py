@@ -1,10 +1,15 @@
 import pygame
 
 from engine import CoreEngine, Action
+from gui import *
 
 if __name__ == "__main__":
+
+    # fps handlings
     fps = 60
     engine = CoreEngine(dt=1 / fps)
+
+    # initialization
     pygame.init()
     screen_width = 800
     screen_height = 600
@@ -12,7 +17,7 @@ if __name__ == "__main__":
     pygame.display.set_caption("TrackMini")
     clock = pygame.time.Clock()
 
-    # Handle events
+    # handle events
     running = True
     while running:
         for event in pygame.event.get():
@@ -22,16 +27,25 @@ if __name__ == "__main__":
         if not running:
             break
 
-        # Handle key presses
+        # handle key presses
         keys = pygame.key.get_pressed()
+
+        # quit
+        if keys[pygame.K_ESCAPE]:
+            running = False
+
         action = Action(
             throttle=keys[pygame.K_UP] - keys[pygame.K_DOWN],
             wheel_angle=0,
         )
         engine.update(action)
 
-        screen.fill(pygame.Color("black"))
+        # background
+        screen.fill(background_color)
+
+        # drawings
         engine.draw(screen)
+
         pygame.display.flip()
 
         clock.tick(fps)

@@ -5,6 +5,7 @@ import pygame
 import pymunk
 import pymunk.pygame_util
 from pymunk.vec2d import Vec2d
+from gui import *
 
 
 @dataclass
@@ -48,7 +49,7 @@ class CoreEngine:
         self.space.add(self.car_body, shape)
 
         for s in self.car_body.shapes:
-            s.color = (0, 255, 100, 255)
+            s.color = car_color
 
     def update(self, action: Action) -> None:
         # kill lateral velocity
