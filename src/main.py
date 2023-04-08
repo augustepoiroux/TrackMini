@@ -1,10 +1,8 @@
 import pygame
-
-from engine import CoreEngine, Action
-from gui import *
+from engine import Action, CoreEngine
+from gui import background_color
 
 if __name__ == "__main__":
-
     # fps handlings
     fps = 60
     engine = CoreEngine(dt=1 / fps)

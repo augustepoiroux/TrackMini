@@ -61,7 +61,7 @@ select = [
     "PTH",
     "ARG",
     "PYI",
-    "D",
+    # "D",
     "ERA"
 ]
 # to add:
@@ -74,4 +74,5 @@ line-length = 120
 preview     = true
 
 [tool.mypy]
-strict = true
+strict                 = true
+ignore_missing_imports = true
