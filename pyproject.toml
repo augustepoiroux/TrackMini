@@ -1,0 +1,74 @@
+[tool.poetry]
+name        = "trackmini"
+version     = "0.1.0"
+description = "A 2D minimalist version of TrackMania"
+authors     = []
+readme      = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+gymnasium = "^0.28.1"
+pygame = "^2.3.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+ruff  = "^0.0.261"
+mypy  = "^1.2.0"
+
+[build-system]
+requires      = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+fix = false
+show-fixes = true
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "UP",
+    "YTT",
+    "ANN",
+    "BLE",
+    "A",
+    "COM",
+    "C4",
+    "EXE",
+    "ISC",
+    "ICN",
+    "INP",
+    "PIE",
+    "Q",
+    "RSE",
+    "RET",
+    "SIM",
+    "TID",
+    "TCH",
+    "INT",
+    "PL",
+    "RUF",
+    "B",
+    "PT",
+    "SLF",
+    "C90",
+    "N",
+    "G",
+    "EM",
+    "TRY",
+    "NPY",
+    "PTH",
+    "ARG",
+    "PYI",
+    "D",
+    "ERA"
+]
+# to add:
+line-length    = 120
+target-version = "py38"
+
+[tool.black]
+line-length = 120
+
+[tool.mypy]
+strict = true
