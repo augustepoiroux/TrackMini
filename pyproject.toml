@@ -60,9 +60,9 @@ select = [
     "NPY",
     "PTH",
     "ARG",
-    "PYI",
+    "PYI"
     # "D",
-    "ERA"
+    # "ERA"
 ]
 # to add:
 line-length    = 120

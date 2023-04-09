@@ -27,11 +27,6 @@ class PhysicCar:
             s.color = car_color
 
     def update(self, throttle: float, wheel_angle: float) -> None:
-        # kill lateral velocity
-        current_right_normal = self.body.rotation_vector.rotated_degrees(90)
-        current_lateral_velocity = current_right_normal.dot(self.body.velocity) * current_right_normal
-        self.body.apply_impulse_at_local_point(0.0001 * self.body.mass * -current_lateral_velocity)
-
         # apply longitudinal force
         acceleration_scalar = throttle * (self.acceleration if throttle > 0 else self.brake)
         self.body.apply_force_at_local_point(
@@ -44,12 +39,14 @@ class PhysicTire:
         self.position = position
         self.angle = angle
         self.mass = 1
-        self.length = 5
-        self.width = 2
+        self.length = 100
+        self.width = 30
         self.angular_friction = 0.1
         self.drag = 2
 
         self.body = pymunk.Body()
+        self.body.position = position
+        self.body.angle = angle
 
         self.shape = pymunk.Poly.create_box(self.body, (self.length, self.width), 0.0)
         self.shape.mass = self.mass
@@ -64,17 +61,18 @@ class PhysicTire:
         # kill lateral velocity
         self.body.apply_impulse_at_local_point(self.body.mass * -self.get_lateral_velocity())
 
-        # reduce angular velocity
-        angular_impulse = self.angular_friction * self.body.moment * -self.body.angular_velocity
-        self.body.apply_impulse_at_local_point(
-            impulse=angular_impulse / self.length,  # TODO: is this correct?
-            point=Vec2d(self.length, 0).rotated(self.body.angle),
-        )
+        # # reduce angular velocity
+        # angular_impulse = self.angular_friction * self.body.moment * -self.body.angular_velocity
+        # self.body.apply_impulse_at_local_point(
+        #     impulse=angular_impulse / self.length,  # TODO: is this correct?
+        #     point=Vec2d(self.length, 0).rotated(self.body.angle),
+        # )
 
-        # apply drag
-        drag_force_scalar = -self.drag * self.body.velocity.length
-        self.body.apply_force_at_local_point(drag_force_scalar * self.body.velocity)
+        # # apply drag
+        # drag_force_scalar = -self.drag * self.body.velocity.length
+        # self.body.apply_force_at_local_point(drag_force_scalar * self.body.velocity)
 
     def get_lateral_velocity(self) -> Vec2d:
-        current_right_normal: Vec2d = self.body.rotation_vector.rotated_degrees(90)
+        current_right_normal: Vec2d = self.body.rotation_vector.perpendicular_normal()
         return current_right_normal.dot(self.body.velocity) * current_right_normal
+        return self.body.velocity.projection(self.body.rotation_vector.perpendicular())

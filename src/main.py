@@ -12,7 +12,6 @@ if __name__ == "__main__":
     screen_width = 800
     screen_height = 600
     screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption("TrackMini")
     clock = pygame.time.Clock()
 
     # handle events
@@ -21,9 +20,6 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-        if not running:
-            break
 
         # handle key presses
         keys = pygame.key.get_pressed()
@@ -36,6 +32,8 @@ if __name__ == "__main__":
             throttle=keys[pygame.K_UP] - keys[pygame.K_DOWN],
             wheel_angle=0,
         )
+
+        # update the world
         engine.update(action)
 
         # background
@@ -47,3 +45,4 @@ if __name__ == "__main__":
         pygame.display.flip()
 
         clock.tick(fps)
+        pygame.display.set_caption(f"TrackMini - fps: {clock.get_fps():.1f}")
