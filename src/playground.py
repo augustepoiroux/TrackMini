@@ -57,8 +57,8 @@ if __name__ == "__main__":
                 if hit != [] and hit[0].shape is not None:
                     body = hit[0].shape.body
                     rest_length = mouse_body.position.get_distance(body.position)
-                    stiffness = 1
-                    damping = 1
+                    stiffness = 1000
+                    damping = 10
 
                     mouse_springs.append(
                         pymunk.DampedSpring(mouse_body, body, (0, 0), (0, 0), rest_length, stiffness, damping),
