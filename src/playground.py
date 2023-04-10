@@ -1,7 +1,7 @@
 import pygame
 import pymunk
 import pymunk.pygame_util
-from car import PhysicCar, PhysicTire
+from car import PhysicCar
 from pymunk import Vec2d
 from gui import background_color
 
@@ -15,22 +15,20 @@ if __name__ == "__main__":
     screen_width = 800
     screen_height = 600
     screen = pygame.display.set_mode((screen_width, screen_height))
+    draw_options = pymunk.pygame_util.DrawOptions(screen)
     clock = pygame.time.Clock()
 
     space = pymunk.Space()
     space.gravity = (0, 0)
 
     # Add objects here
-    tire = PhysicTire(position=Vec2d(screen_width / 2.0, screen_height / 2.0), angle=0)
-    space.add(tire.body, tire.shape)
-    car = PhysicCar(position=Vec2d(screen_width / 3.0, screen_height / 2.0))
-    space.add(car.body, car.shape)
+    car = PhysicCar(position=Vec2d(screen_width / 2, screen_height / 2), angle=0)
+    car.add(space)
 
     ### ALL SETUP DONE
 
     mouse_springs = []
     mouse_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
-    draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     # handle events
     running = True
@@ -79,7 +77,6 @@ if __name__ == "__main__":
 
         r = 1
         for _ in range(r):
-            tire.update(throttle=throttle, wheel_angle=wheel_angle)
             car.update(throttle=throttle, wheel_angle=wheel_angle)
             space.step(dt / r)
 
@@ -87,6 +84,6 @@ if __name__ == "__main__":
         screen.fill(background_color)
         space.debug_draw(draw_options)
         pygame.display.set_caption(f"Playground - fps: {clock.get_fps():.1f}")
-
         pygame.display.flip()
+
         clock.tick(fps)

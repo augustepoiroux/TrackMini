@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     # add objects here
     engine = CoreEngine(dt=1 / fps)
-    engine.add(PhysicCar(position=Vec2d(100, 100)))
+    engine.add(PhysicCar(position=Vec2d(100, 100), angle=0))
 
     # handle events
     running = True

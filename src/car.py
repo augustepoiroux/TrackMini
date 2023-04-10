@@ -11,18 +11,16 @@ from utils import apply_angular_impulse, apply_torque
 
 
 class PhysicCar(UpdatablePhysicObject):
-    def __init__(self, position: Vec2d) -> None:
+    def __init__(self, position: Vec2d, angle: float) -> None:
         # define constants
-        self.mass = 1
-        self.width = 30
-        self.length = 60
-        self.radius = Vec2d(self.width, self.width).length
-        self.acceleration = 50
-        self.brake = 200
+        self.mass = 1000
+        self.width = 150
+        self.length = 300
         self.friction = 0.8
 
         self.body = pymunk.Body()
         self.body.position = position
+        self.body.angle = angle
 
         self.shape = pymunk.Poly.create_box(self.body, (self.length, self.width), 0.0)
         self.shape.mass = self.mass
@@ -31,28 +29,74 @@ class PhysicCar(UpdatablePhysicObject):
         for s in self.body.shapes:
             s.color = car_color
 
+        self.tires = {
+            "front_left": PhysicTire(
+                position=self.body.position + Vec2d(self.length / 2.0, -self.width / 2.0 - PhysicTire.width),
+                angle=angle,
+            ),
+            "front_right": PhysicTire(
+                position=self.body.position + Vec2d(self.length / 2.0, self.width / 2.0 + PhysicTire.width),
+                angle=angle,
+            ),
+            "back_left": PhysicTire(
+                position=self.body.position + Vec2d(-self.length / 2.0, -self.width / 2.0 - PhysicTire.width),
+                angle=angle,
+            ),
+            "back_right": PhysicTire(
+                position=self.body.position + Vec2d(-self.length / 2.0, self.width / 2.0 + PhysicTire.width),
+                angle=angle,
+            ),
+        }
+
+        self.joints = [
+            pymunk.PinJoint(self.tires["back_left"].body, self.body, (0, 0), (0, 0)),
+            pymunk.constraints.RotaryLimitJoint(self.tires["back_left"].body, self.body, 0, 0),
+            pymunk.constraints.PivotJoint(
+                self.tires["back_left"].body, self.body, self.tires["back_left"].body.position
+            ),
+            pymunk.PinJoint(self.tires["back_right"].body, self.body, (0, 0), (0, 0)),
+            pymunk.constraints.RotaryLimitJoint(self.tires["back_right"].body, self.body, 0, 0),
+            pymunk.constraints.PivotJoint(
+                self.tires["back_right"].body, self.body, self.tires["back_right"].body.position
+            ),
+            pymunk.PinJoint(self.tires["front_left"].body, self.body, (0, 0), (0, 0)),
+            pymunk.constraints.PivotJoint(
+                self.tires["front_left"].body, self.body, self.tires["front_left"].body.position
+            ),
+            pymunk.PinJoint(self.tires["front_right"].body, self.body, (0, 0), (0, 0)),
+            pymunk.constraints.PivotJoint(
+                self.tires["front_right"].body, self.body, self.tires["front_right"].body.position
+            ),
+        ]
+
+    def add(self, space: pymunk.Space) -> None:
+        space.add(self.body, self.shape)
+        space.add(*self.joints)
+        for tire in self.tires.values():
+            tire.add(space)
+
     def update(self, throttle: float, wheel_angle: float) -> None:
-        # apply longitudinal force
-        acceleration_scalar = throttle * (self.acceleration if throttle > 0 else self.brake)
-        self.body.apply_force_at_local_point(
-            self.body.mass * acceleration_scalar * self.body.rotation_vector,
-        )
+        for tire_name, tire in self.tires.items():
+            if "front" in tire_name:
+                tire.update(throttle, wheel_angle)
+            else:
+                tire.update(throttle, 0)
 
 
 class PhysicTire(UpdatablePhysicObject):
+    mass: float = 7
+    length: float = 100
+    width: float = 30
+    angular_friction: float = 0.1
+    drag: float = 1
+    max_lateral_impulse: float = 100
+    # current_traction: float = 1  # to be updated depending on the surface
+    turn_force: float = 50000
+    max_drive_force: float = 15000
+
     def __init__(self, position: Vec2d, angle: float) -> None:
         self.position = position
         self.angle = angle
-        self.mass = 1
-        self.length = 100
-        self.width = 30
-        self.angular_friction = 0.1
-        self.drag = 1
-        self.max_lateral_impulse = 0.1
-        self.current_traction = 1  # to be updated depending on the surface
-
-        self.turn_force = 5000
-        self.max_drive_force = 150
 
         self.body = pymunk.Body()
         self.body.position = position
@@ -63,6 +107,9 @@ class PhysicTire(UpdatablePhysicObject):
 
         for s in self.body.shapes:
             s.color = tire_color
+
+    def add(self, space: pymunk.Space) -> None:
+        space.add(self.body, self.shape)
 
     def update(self, throttle, wheel_angle) -> None:
         self.update_friction()

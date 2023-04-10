@@ -22,6 +22,9 @@ class Obstacle(PhysicObject):
 
         self.shape = pymunk.Poly.create_box(self.body, (self.length, self.width), 0.0)
 
+    def add(self, space: pymunk.Space) -> None:
+        space.add(self.body, self.shape)
+
 
 if __name__ == "__main__":
     from material import Concrete

@@ -10,8 +10,8 @@ class Road(PhysicObject):
         material: Material,
         position: tuple[float, float],
         angle: float = 0.0,
-        width: float = 25.0,
-        length: float = 50.0,
+        width: float = 32.0,
+        length: float = 32.0,
     ) -> None:
         self.material = material
         self.width = width
@@ -22,6 +22,9 @@ class Road(PhysicObject):
         self.body.angle = angle
 
         self.shape = pymunk.Poly.create_box(self.body, (self.length, self.width), 0.0)
+
+    def add(self, space: pymunk.Space) -> None:
+        space.add(self.body, self.shape)
 
 
 if __name__ == "__main__":

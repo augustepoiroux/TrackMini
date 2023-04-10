@@ -29,7 +29,7 @@ class CoreEngine:
         self.updatable_objects: list[UpdatablePhysicObject] = []
 
     def add(self, physic_object: PhysicObject) -> None:
-        self.space.add(physic_object.body, physic_object.shape)
+        physic_object.add(self.space)
         if isinstance(physic_object, UpdatablePhysicObject):
             self.updatable_objects.append(physic_object)
 

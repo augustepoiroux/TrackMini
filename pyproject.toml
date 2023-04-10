@@ -10,6 +10,7 @@ python    = "^3.11"
 gymnasium = "^0.28.1"
 pygame    = "^2.3.0"
 pymunk    = "^6.4.0"
+pyglet = "^2.0.5"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"

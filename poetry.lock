@@ -190,6 +190,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "pyglet"
+version = "2.0.5"
+description = "Cross-platform windowing and multimedia library"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pymunk"
 version = "6.4.0"
 description = "Pymunk is a easy-to-use pythonic 2d physics library"
@@ -222,7 +230,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.11"
-content-hash = "056d215f5492f1ba189a85645b14c4b79172654bc0818969179567d6f5c633fb"
+content-hash = "35153063c716fdc350147cfd59b1c50a8a29fc63ac1e59cdda27037fe9741769"
 
 [metadata.files]
 black = [
@@ -489,6 +497,10 @@ pygame = [
     {file = "pygame-2.3.0-pp39-pypy39_pp73-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:c2961d44593aaa99580971e4123db00d4ca72fb4b30fa56350b3f6792331a41e"},
     {file = "pygame-2.3.0-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:385163fd1ed8809a72be68fddc9c76876c304e8712695aff2ea49adf3831caf9"},
     {file = "pygame-2.3.0.tar.gz", hash = "sha256:884b92c9cbf0bfaf8b8dd0f75a746613c55447d307ddd1addf903709b3b9f89f"},
+]
+pyglet = [
+    {file = "pyglet-2.0.5-py3-none-any.whl", hash = "sha256:b0b94d0a3f9d0016bee506566fd13d7c62b5b9d10b6e16d32765d654959ba4dc"},
+    {file = "pyglet-2.0.5.zip", hash = "sha256:c47ff4eded95104d030e0697eedd6082b61dc987460bbca83ec47b6e7cbfd38a"},
 ]
 pymunk = [
     {file = "pymunk-6.4.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:3651706fad57d2ef5be58cccc911e8ddf71c2d22171e28e05624dbf8591a519b"},
