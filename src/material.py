@@ -38,6 +38,13 @@ class Ice(Material):
 
 
 @dataclass(kw_only=True)
+class Plastic(Material):
+    color: tuple[int, int, int, int] = (255, 100, 100, 255)
+    friction: float = 0.9
+    elasticity: float = 0.6
+
+
+@dataclass(kw_only=True)
 class Rubber(Material):
     color: tuple[int, int, int, int] = (255, 100, 100, 255)
     friction: float = 0.9

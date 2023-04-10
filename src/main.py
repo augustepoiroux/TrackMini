@@ -1,18 +1,25 @@
 import pygame
+from pymunk import Vec2d
+import pymunk.pygame_util
 from engine import Action, CoreEngine
 from gui import background_color
+from car import PhysicCar
 
 if __name__ == "__main__":
     # fps handlings
     fps = 60
-    engine = CoreEngine(dt=1 / fps)
 
     # initialization
     pygame.init()
     screen_width = 800
     screen_height = 600
     screen = pygame.display.set_mode((screen_width, screen_height))
+    draw_options = pymunk.pygame_util.DrawOptions(screen)
     clock = pygame.time.Clock()
+
+    # add objects here
+    engine = CoreEngine(dt=1 / fps)
+    engine.add(PhysicCar(position=Vec2d(100, 100)))
 
     # handle events
     running = True
@@ -40,7 +47,7 @@ if __name__ == "__main__":
         screen.fill(background_color)
 
         # drawings
-        engine.draw(screen)
+        engine.draw(draw_options)
 
         pygame.display.flip()
 
